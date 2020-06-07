@@ -1,0 +1,64 @@
+BIOS - Change V4.06 Release 1.10.2509                          20.12.2010
+=====================================
+- CPU Microcode update for Intel Xeon 5100/ 5200/ 5300 5400 based processor
+  (CPUID/Patch ID: 6FB/BC; 10676/60F;  1067A/A0B)
+
+BIOS - Change V4.06 Release 1.09.2509                          29.10.2010
+=====================================
+- Support PS2 keyboard for VMWare VMware ESXi 4.1 installation
+- CPU Microcode update (ID 0xB9) for Intel Xeon 5300/ 5400 based processor
+- Update SATA  LSI MegaRAID A.09.04151432R Expansion ROM
+- Prevent ACPI Warning boot messages with SLES11 SP1 x86_64 XEN 
+
+BIOS - Change V4.06 Release 1.08.2509                          30.11.2009
+=====================================
+- changed bios structure to improve smbios features
+
+BIOS - Change V4.06 Release 1.07.2509                          29.05.2009
+=====================================
+- Company Name Transfer to Fujitsu Technology Solutions
+
+
+BIOS - Change V4.06 Release 1.06.2509                          17.12.2008
+=====================================
+- WHEA communication buffer is reserved to prohibit usage by OS
+
+
+BIOS - Change V4.06 Release 1.04.2509                          31.07.2008
+=====================================
+- New Features: Memory Throttling and Memory Power Mode
+- CPU Enhanced Idle Power State (C-State) Support
+- New CPU Stepping support
+- Workaround for Suse Linux SLES-10 SP2 NMI (IRMC-S2 VGA 'Completer Abort'
+error)
+- Enable/Disable of onboard VGA function supported
+- Fixed problem in Boot menu after F12 key is pressed during OPROM scan
+
+BIOS - Change V4.06 Release 1.03.2509                          04.07.2008
+=====================================
+- Impoved Memory Modul Error recovery to handle "Fatal General Memory Error"
+
+
+BIOS - Change V4.06 Release 1.02.2509                          09.03.2008
+=====================================
+- Windows 2008 Support
+- Update Intel Memory Reference Code
+- Improved Logging of Memory Errors in SEL
+- Enhancements for boot from USB DVD devices
+- Support Remote Storage Device Access by Nero 8 
+- Solution for sporadic POST code B7 stop in case of High Precision Event Timer
+enabled
+- New BIOS Setup option "high bandwidth" (effect depends on Application/
+Benchmark)
+
+
+BIOS - Change V4.06 Release 1.01.2509                          05.02.2008
+=====================================
+- Intel Processor Microcode Update (Intel Errata AX52, AY52:  VMWare V3.5
+affected)
+
+
+
+BIOS - Change V4.06 Release 1.00.2509                          26.11.2007
+=====================================
+- Initial Release!

@@ -1,0 +1,84 @@
+###############################################################################
+#                            OUTPUT PLUGINS                                   #
+###############################################################################
+
+
+# Configuration for sending metrics to InfluxDB
+[[outputs.influxdb]]
+  ## The full HTTP or UDP URL for your InfluxDB instance.
+  ##
+  ## Multiple URLs can be specified for a single cluster, only ONE of the
+  ## urls will be written to each interval.
+  # urls = ["unix:///var/run/influxdb.sock"]
+  urls = ["udp://192.168.0.114:8089"]
+  # urls = ["http://192.168.0.114:8086"]
+
+  ## The target database for metrics; will be created as needed.
+  ## For UDP url endpoint database needs to be configured on server side.
+   database = "telegraf"
+
+###############################################################################
+#                            INPUT PLUGINS                                    #
+###############################################################################
+
+
+# Read metrics from storage devices supporting S.M.A.R.T.
+[[inputs.smart]]
+  ## Optionally specify the path to the smartctl executable
+  # path = "/usr/bin/smartctl"
+
+  ## On most platforms smartctl requires root access.
+  ## Setting 'use_sudo' to true will make use of sudo to run smartctl.
+  ## Sudo must be configured to to allow the telegraf user to run smartctl
+  ## without a password.
+use_sudo = true
+
+  ## Skip checking disks in this power mode. Defaults to
+  ## "standby" to not wake up disks that have stoped rotating.
+  ## See --nocheck in the man pages for smartctl.
+  ## smartctl version 5.41 and 5.42 have faulty detection of
+  ## power mode and might require changing this value to
+  ## "never" depending on your disks.
+  # nocheck = "standby"
+
+  ## Gather all returned S.M.A.R.T. attribute metrics and the detailed
+  ## information from each drive into the 'smart_attribute' measurement.
+attributes = true
+
+  ## Optionally specify devices to exclude from reporting.
+  # excludes = [ "/dev/pass6" ]
+
+  ## Optionally specify devices and device type, if unset
+  ## a scan (smartctl --scan) for S.M.A.R.T. devices will
+  ## done and all found will be included except for the
+  ## excluded in excludes.
+  # devices = [ "/dev/ada0 -d atacam" ]
+
+  ## Timeout for the smartctl command to complete.
+  # timeout = "30s"
+
+# Monitor sensors, requires lm-sensors package
+[[inputs.sensors]]
+  ## Remove numbers from field names.
+  ## If true, a field name like 'temp1_input' will be changed to 'temp_input'.
+  # remove_numbers = true
+
+  ## Timeout is the maximum amount of time that the sensors command can run.
+  # timeout = "5s"
+
+
+[[inputs.zfs]]
+  ## ZFS kstat path. Ignored on FreeBSD
+  ## If not specified, then default is:
+  # kstatPath = "/proc/spl/kstat/zfs"
+
+  ## By default, telegraf gather all zfs stats
+  ## Override the stats list using the kstatMetrics array:
+  ## For FreeBSD, the default is:
+  # kstatMetrics = ["arcstats", "zfetchstats", "vdev_cache_stats"]
+  ## For Linux, the default is:
+  # kstatMetrics = ["abdstats", "arcstats", "dnodestats", "dbufcachestats",
+  #     "dmu_tx", "fm", "vdev_mirror_stats", "zfetchstats", "zil"]
+
+  ## By default, don't gather zpool stats
+poolMetrics = true

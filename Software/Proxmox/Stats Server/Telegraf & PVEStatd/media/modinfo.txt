@@ -1,0 +1,12 @@
+root@MasterServer:~# modinfo smsc47m1
+filename:       /lib/modules/5.3.18-3-pve/kernel/drivers/hwmon/smsc47m1.ko
+license:        GPL
+description:    SMSC LPC47M1xx fan sensors driver
+author:         Mark D. Studebaker <mdsxyz123@yahoo.com>
+srcversion:     72B57F526144C4C9D4EA53F
+depends:        
+retpoline:      Y
+intree:         Y
+name:           smsc47m1
+vermagic:       5.3.18-3-pve SMP mod_unload modversions 
+parm:           force_id:Override the detected device ID (ushort)

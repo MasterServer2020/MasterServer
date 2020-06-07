@@ -1,0 +1,17 @@
+[global]
+workgroup = WORKGROUP
+server string = Samba Server %v
+netbios name = Media-Server
+security = user
+map to guest = never
+dns proxy = no
+
+[Media]
+path = /zpool/data/media
+valid users = @invitado
+browsable = yes
+writable = yes
+guest ok = no
+read only = no
+create mask = 1777
+directory mask = 1777

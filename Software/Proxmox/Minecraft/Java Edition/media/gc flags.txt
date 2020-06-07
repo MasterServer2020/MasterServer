@@ -1,0 +1,54 @@
+Default minecraft client
+-client -d64 -Xmx4G -Xms1G -Xmn600m -XX:+UseConcMarkSweepGC -XX:+UseParNewGC -XX:+DisableExplicitGC -XX:+UseNUMA -XX:+CMSParallelRemarkEnabled -XX:MaxTenuringThreshold=15 -XX:MaxGCPauseMillis=30 -XX:GCPauseIntervalMillis=150 -XX:+UseAdaptiveGCBoundary -XX:-UseGCOverheadLimit -XX:+UseBiasedLocking -XX:SurvivorRatio=8 -XX:TargetSurvivorRatio=90 -XX:MaxTenuringThreshold=15 -Dfml.ignorePatchDiscrepancies=true -Dfml.ignoreInvalidMinecraftCertificates=true -XX:+UseFastAccessorMethods -XX:+UseCompressedOops -XX:+OptimizeStringConcat -XX:ReservedCodeCacheSize=2048m -XX:+UseCodeCacheFlushing -XX:SoftRefLRUPolicyMSPerMB=2000 -XX:ParallelGCThreads=16
+
+Default Minecraft server
+java -Xms9G -Xmx9G -XX:+UseG1GC -XX:+UnlockExperimentalVMOptions -XX:MaxGCPauseMillis=50 -XX:+DisableExplicitGC -XX:TargetSurvivorRatio=90 -XX:G1NewSizePercent=50 -XX:G1MaxNewSizePercent=80 -XX:InitiatingHeapOccupancyPercent=10 -XX:G1MixedGCLiveThresholdPercent=50 -XX:+AggressiveOpts -XX:+AlwaysPreTouch -XX:+UseStringDeduplication -jar Paperclip.jar
+
+Another
+-client -d64 -Xms6G -Xmx6G -Xmn128m -XX:+UseG1GC -XX:+AlwaysPreTouch -XX:+UnlockExperimentalVMOptions -XX:MaxGCPauseMillis=100 -XX:+DisableExplicitGC -XX:TargetSurvivorRatio=90 -XX:G1NewSizePercent=50 -XX:G1MaxNewSizePercent=80 -XX:InitiatingHeapOccupancyPercent=10 -XX:G1MixedGCLiveThresholdPercent=50 -XX:+AggressiveOpts
+
+Serial
+
+Parallel
+
+-Xmx6G -Xms6G -Xmn600m -XX:+DisableExplicitGC -XX:+UseParallelOldGC -XX:+UseNUMA
+
+CMS
+
+-Xmx6G -Xms6G -Xmn600m -XX:+DisableExplicitGC -XX:+UseConcMarkSweepGC -XX:+UseParNewGC  -XX:+UseLargePages -XX:+UseNUMA
+
+G1
+
+-Xmx6G -Xms6G -Xmn600m -XX:+DisableExplicitGC -XX:UseG1GC  -XX:+UseLargePages -XX:+UseNUMA -XX:+UseStringDeduplication
+
+Shenandoah
+
+-Xmx6G -Xms6G -Xmn600m -XX:+UseShenandoahGC -XX:+AlwaysPreTouch  -XX:+UseLargePages -XX:+UseNUMA -XX:+DisableExplicitGC -XX:+UseCompressedOops
+
+
+FLAGS
+
+
+-XX:+UseSerialGC
+-XX:+UseParallelGC; Young generation uses multi-threaded GC, older a single thread
+-XX:+UseParallelOldGC; Both generations with multi-threaded GC
+-XX:+UseParNewGC; Young generation uses multi-threading
+-XX:+UseConcMarkSweepGC; Enables the CMS GC and ParNewGC by default
+-XX:+UseG1GC; Enables G1 GC
+-XX:+UseShenandoahGC; Enables Shenandoah GC
+
+-Xmx; Maximum heap size
+-Xms; Initial heap size
+-Xmn;
+-XX:+DisableExplicitGC; Ignores any **System.gc()** method invocations by an application, which means GC is not controlled by the application
+
+
+
+Notes:
+
+CMS crashes when xmn=32m
+Setting a high Xmn will cause micro STW events. Higher Xmn=+STW & less CPU usage, Lower Xmn=No STW & high CPU usage
+G1 performs better than CMS with lower Xmn size (less latency and micro stutter)
+Its better NOT setting
+ZGC is a similar GC to Shenandoah but its only available in JDK 11 or higher
+Shenandoa was developed by RedHat instead of Oracle. It's not available in Oracle JDKs, only in AdoptOpenJDK and RedHat OpenJDK 8 and higher

@@ -1,0 +1,31 @@
+# Config version, do not edit
+version: 2
+# How often scoreboard should be updated in ticks (20 ticks = 1 second)
+# 0 = disabled, ENABLE THIS IF YOU USE PLACEHOLDERS
+# With coordinates 10-20 recommended, with other placeholders 80-200
+update: 20
+# Use async task to update scoreboard
+# Less server load but may lead to errors
+async: true
+# Scoreboard title
+title: "§9M§ba§as§et§6e§cr§dS§9e§br§av§ee§6r"
+# Scoreboard lines
+# You can use § for colors and placeholders from PlaceholderAPI
+text:
+  - ""
+  - "§bPlayers: §a%server_online%"
+  - "§c=========================="
+  - "     §9%player%"
+  - " §aPing: §2%player_ping%"
+  - " §cDeaths: §4%kdr_deaths%"
+  - " §6Kills: §2%kdr_kills%"
+  - ""
+  - "     §dCoordinates"
+  - " §cX: §f%player_x% §aY: §f%player_y% §9Z: §f%player_z%"
+  - "§c--------------------------"
+  - "     §6Top Kills"
+  - " §e%kdr_topkillsplayer% §2%kdr_topkills%"
+  - ""
+  - "     §cTop Deaths"
+  - " §d%kdr_topdeathsplayer% §4%kdr_topdeaths%"
+  - ""

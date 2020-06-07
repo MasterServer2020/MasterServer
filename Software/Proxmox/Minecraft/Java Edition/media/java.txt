@@ -1,0 +1,116 @@
+JVM
+
+A Java Virtual Machine has 3 main memory structures;
+
+Stack; Each thread has its own stack memory zone
+Heap; Common zone for all the threads which contains objects information
+Non-Heap; Common zone for the application which contains classes information
+
+The Stack is not going to be a subject of study due to the focus of this project
+The most important subzones of the Non-Heap memory are the cache and the PermGen.
+
+Heap
+
+Java uses originally a generational memory management.
+Every object created in Java has a life cycle, that's because some of the objects will become unreferenced, useless during the
+program execution. If objects didn't have a life cycle all of them would stay alive forever taking infinite amount of memory and producing
+OutOfMemoryErrors.
+Unreferenced objects are called garbage.
+Object creation is done through Object example= new Object();
+
+Young Generation
+Eden Space; Initial memory pool where all new objects are first allocated
+Survivor Space; Pool that contains objects that survived the GC of the Eden Space. There are 2 survivor spaces to avoid an extra step of compacting; Instead it uses the copy-mark algorithm
+
+
+Old/Tenured Generation; Pool containing objects that have survived to GC in the survivor space. The age of the object (tenuring) needed to pass to the Tenured Generation can be changed manually or dynamically by the JVM
+
+
+Garbage Collection Algorithms
+
+mark-sweep removes unreferences objects to free space and keeps referenced ones.
+The memory allocator keeps references to freed space blocks where a new object can be allocated.
+Has memory fragmentation
+If an object that has to be allocated cant fit in the freed space blocks, it will have to take new large memory blocks
+
+mark-sweep-compact after deleting unreferenced objects, compacts (moves and put them togheter) the referenced ones that are kept, which
+makes allocation easier, faster and optimices memory usage.
+
+mark-copy; Instead of moving objects in the same memory region, they are copied to a different memory region, allowing
+m copying and marking simultaneously
+
+Garbage Collectors
+
+Garbage collectors use different algorithms to collect the garbage (unreferenced objects) in two different operations;
+
+Minor GC; Collects garbage from the young generation
+Major GC; Collects garbage from the old generation
+
+Serial GC
+
+It only works in a single thread which is only advised for very small programs and low-end devices, not relevant nowadays.
+
+Parallel GC
+
+Uses mark-copy for the minor GC and mark-sweep-compact for the major GC. It uses multiple threads.
+That means it will freeze the application when the heap is nearly full, which is called STW (Stop The World)
+
+Concurrent collector/CMS (Concurrent Mark Sweep)
+
+Uses mark-copy in the Young Generation and mark-sweep in the Old Generation
+Scans the heap using multiple threads, minimizing pauses doing the GC concurrently (at the same time the application runs).
+
+
+G1 GC
+
+It was introduced in Java 7 to support larger heaps than 4GB.
+It divides the heap into memory regions from 1 to 32MB by default but it can be changed depending on the size of the heap and flags.
+It uses multiple threads to scan the heap for regions containing most garbage first, that's why its name;
+Garbage first.
+The memory is fragmented by default into regions so that's not something to worry about unlike the mark-sweep algorithm.
+Also it compacts the heap on-the-go, so theres no freezing or STW collection
+Also, since the update 20 of Java 8 it uses strings deduplication. Strings take a lot of heap, so the G1 GC identifies
+which strings are duplicated multiple times and make them point to the same internal **char** array to reduce the use of the heap
+That can be turned on with XX:+UseStringDeduplicationJVM
+
+Shenandoah GC
+
+All the GCs have a pause when the minor GC is done. It's nothing compared to a major GC STW freeze, but minor GCs copy-mark algorithm translates into micro-stuttering or small performance spikes. 
+Also, the Concurrent GC doesn't solve fragmentation due to the lack of compression in the major GC concurrent sweeping
+In comparison, G1 has a pause when it does the compression on-the-go
+
+Shenandoa divides the heap in a smiliar way as G1 but it's not generational.
+it has 3 major phases;
+
+Init Mark; Initiates the marking
+Concurrent marking; Walks over the heap and marks alive and dead objects
+Final Mark; Finishes the Concurrent Marking by draining all pending marking/update queues and re-scans the regions
+Concurrent Cleanup; Frees up garbage regions with no alive objects at all
+Concurrent Evacuation; Copies alive objects from regions with some dead objects to other free regions
+Init Update Refs; Initiates the references update and makes sure the GC has finished evacuating
+Concurrent Update Refs; Walks over the heap and updates references to objects moved during the evacuation into references to the whole region that contained that object
+Final Update Refs; Finishes the Concurrent Update Refs by re-updating the regions and removing useless references
+Concurrent Cleanup; Reclaims regions that contained some alive and dead objects
+
+The main difference is that every part of the process is concurrent; Evacuation replaces compression and keeps the
+alive object accessible during the copy of the object to a new memory region, since it stays duplicated until its finally
+cleaned, which is a huge improvement
+
+Performance VS Throughput
+
+Performance means how quickly an application responds to an event. It's important for applications that focus on responsiveness like a game
+waiting times are not acceptable and it's important responding in short times, which means low latency.
+Throughput is the amount of work an application can do in a period of time. It's important for applications that dont care
+about waiting times and focus on performance over long periods of time, like batch applications or transactions.
+
+The Concurrent GC is optimized for short pauses with the cost of high CPU and RAM usage. It's focused on the performance
+The Parallel GC is optimized for applications that can deal with waiting times, costing less CPU and RAM than the Concurrent GC. It's focused on the throughput
+The G1 is optimized for large heaps and applications that focus on latency.
+The Shenandoa GC
+The current version of Java 8 im using is 242
+
+Until Java 8, Paralel GC is the default one. Onwards G1 GC is the default.
+That can be checked executing java -XX:+PrintCommandLineFlags -version
+
+to measure the GC i used jstatd -p 1199 -J-Djava.security.policy=jstatd.all.policy with visualVM
+VisualVM is a JVM monitorizer and profiler. It can also make memory and thread dumps to later analyze them

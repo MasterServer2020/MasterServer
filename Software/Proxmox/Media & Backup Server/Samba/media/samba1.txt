@@ -1,0 +1,27 @@
+[global]
+workgroup = WORKGROUP
+server string = Samba Server %v
+netbios name = Backup-Server
+security = user
+map to guest = never
+dns proxy = no
+
+[Efren]
+path = /zfs/data/local/efren
+valid users = efren
+browsable = yes
+writable = yes
+guest ok = no
+read only = no
+create mask = 1777
+directory mask = 1777
+
+[General]
+path = /zfs/data/local/general
+valid users = @invitado
+browsable = yes
+writable = yes
+guest ok = no
+read only = no
+create mask = 1777
+directory mask = 1777
